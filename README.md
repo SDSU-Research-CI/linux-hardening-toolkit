@@ -34,11 +34,11 @@ Linux Hardening Toolkit/
    Copy the `Linux Hardening Toolkit` folder to your server (via SCP, rsync, USB, etc).
 
 2. **Open a Terminal and run:**
-
+```
 cd "Linux Hardening Toolkit"
 sudo chmod +x harden_launcher.sh
 sudo ./harden_launcher.sh
-
+```
 
 3. **Follow the prompts:**
 
