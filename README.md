@@ -51,9 +51,9 @@ sudo ./harden_launcher.sh
 
 4. **Review Logs**
    Output is saved to:
-
+```
    /var/log/hardening.log
-
+```
 ---
 
 ## 🛠 Post-Run Checklist
