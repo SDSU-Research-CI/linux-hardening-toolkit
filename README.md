@@ -6,7 +6,7 @@ This toolkit helps system administrators apply CIS Benchmark-aligned hardening f
 
 ## 📦 Folder Structure
 
-```
+``` bash
 Linux Hardening Toolkit/
 ├── README.md
 ├── harden_launcher.sh             # Main entry point
