@@ -10,6 +10,7 @@ This toolkit helps system administrators apply CIS Benchmark-aligned hardening f
 linux-hardening-toolkit/
 ├── README.md
 ├── VERSION
+├── CHANGELOG.md
 ├── harden_launcher.sh
 ├── scripts/
 │   ├── gnome2.sh
@@ -20,11 +21,11 @@ linux-hardening-toolkit/
 
 ## ✅ Supported Ubuntu Versions
 
-- **18.04 LTS**
-- **20.04 LTS**
-- **22.04 LTS** ✅ tested
-- **24.04 LTS** ✅ target
-- **WSL2** ✅ supported (with automatic exclusions)
+* **18.04 LTS**
+* **20.04 LTS**
+* **22.04 LTS** ✅ tested
+* **24.04.3 LTS** ✅ tested
+* **WSL2** ✅ supported (with automatic exclusions)
 
 > 🔒 Uses CIS Level 1 Workstation guidance by default.
 
@@ -32,81 +33,67 @@ linux-hardening-toolkit/
 
 ## 🔖 Version
 
-Current Version: `v1.1.0`\
-Released: July 2, 2025\
+Current Version: `v1.1.1`
+Released: July 2, 2025
 Maintainer: Alison Peterson
 
 ---
 
-## 🚀 What's New in v1.1.0
+## 🚀 What's New in v1.1.1
 
-- 🚫 Removed legacy `go.sh`
-- ✅ Added logging to `/var/log/hardening.log` for each script's success/failure
-- 📁 Flattened script structure — all `.sh` files now live in `/scripts/`
-- 🧠 Smart script source detection — defaults to launcher’s directory
-- 🖥️ Fixed GDM login banner config via `gnome2.sh`
-- 🧼 Improved cleanup and handling for domain (AD) users
+* ✅ Added `-y` to all apt install/remove/upgrade commands to suppress interactive prompts
+* ✅ Replaced `ufw enable` with `ufw --force enable` to avoid SSH disruption confirmation
+* ✅ Confirmed compatibility with Ubuntu 24.04.3 LTS
+* 📁 All scripts remain flattened under `scripts/`
+* 🔧 Logs enhanced at `/var/log/hardening.log`
 
 ---
 
 ## ⚙️ How to Use
 
-1. **Upload to Server** Copy the `linux-hardening-toolkit` folder to your server (via SCP, rsync, USB, etc).
+1. **Clone the Repository**
 
-2. **Open a Terminal and run:**
+From any Linux system:
 
 ```bash
+git clone https://github.com/SDSU-Research-CI/linux-hardening-toolkit.git
 cd linux-hardening-toolkit
 sudo chmod +x harden_launcher.sh
 sudo ./harden_launcher.sh
 ```
 
-3. **Follow the prompts:**
+> 📝 Note: No need to manually upload or unzip files — run everything directly from the cloned folder.
 
-   - It will detect the user and OS type
-   - Add users to the `sshusers` group
-   - Runs core scripts in order, then all remaining `.sh` scripts automatically
-   - Skip unsupported modules in WSL
-   - Set root password
-   - Clean up `/home/scripts` after completion
+2. **Follow the prompts:**
 
-4. **Review Logs** Output is saved to:
+   * Detects user and OS automatically
+   * Smart detection of script folder
+   * Runs critical scripts in order, then all others
+   * Logs each result to `/var/log/hardening.log`
 
-   ```
-   /var/log/hardening.log
-   ```
+3. **Review Logs & Reboot if Needed**
 
 ---
 
 ## 🛠 Post-Run Checklist
 
-- ✅ Review `/etc/ssh/sshd_config`
-- ✅ Run CIS-CAT Assessor tool for compliance score
-- ✅ Create backup snapshot (if applicable)
-
----
-
-## 🧩 Notes
-
-- Make sure all `.sh` files are placed inside the `scripts/` folder before running.
-- The script avoids executing itself by checking real paths.
-- Designed for minimal input and clean exit.
+* ✅ Review `/etc/ssh/sshd_config`
+* ✅ Run CIS-CAT Assessor for scoring
+* ✅ Apply kernel upgrades (if prompted)
+* ✅ Reboot to apply new modules and microcode
 
 ---
 
 ## 📬 Contributions
 
-If you'd like to extend this for:
+Please coordinate through the Linux Working Group if you'd like to extend this for:
 
-- Server profiles
-- Level 2 benchmarks
-- Cloud-init compatibility
-
-Reach out to your college IT lead or the Linux Working Group.
+* CIS Level 2 or STIG compliance
+* Server profile customization
+* Cloud-init or remote automation
 
 ---
 
 © San Diego State University · College of Science · 2025
 
 Maintained by: Alison Peterson
-
