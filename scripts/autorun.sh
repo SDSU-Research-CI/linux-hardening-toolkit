@@ -1,5 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
+# Exit early if GDM is not installed
+if ! dpkg -l | grep -qE 'gdm|gdm3'; then
+  echo "GNOME Desktop Manager not found — skipping autorun.sh"
+  exit 0
+fi
+
+# Exit early if dconf is not installed
+if ! command -v dconf >/dev/null 2>&1; then
+  echo "dconf not installed — skipping autorun.sh"
+  exit 0
+fi
+
+#!/usr/bin/env bash
 
 
 {
