@@ -1,3 +1,18 @@
+#!/bin/bash
+
+# Exit early if GDM is not installed
+if ! dpkg -l | grep -qE 'gdm|gdm3'; then
+  echo "GNOME Desktop Manager not found — skipping userlist.sh"
+  exit 0
+fi
+
+# Exit early if dconf is not installed
+if ! command -v dconf >/dev/null 2>&1; then
+  echo "dconf not installed — skipping userlist.sh"
+  exit 0
+fi
+
+
 #!/usr/bin/env bash
 
 
