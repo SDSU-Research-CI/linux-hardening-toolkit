@@ -187,7 +187,15 @@ if [[ $IS_WSL -eq 0 && -f "/etc/ssh/sshd_config" ]]; then
     update_ssh_config "ClientAliveCountMax" "3"
     update_ssh_config "MaxStartups" "10:30:60"
 
-    sudo systemctl restart sshd
+# Restart the correct SSH service if it exists
+if systemctl list-units --type=service | grep -q sshd.service; then
+    sudo systemctl restart sshd.service
+elif systemctl list-units --type=service | grep -q ssh.service; then
+    sudo systemctl restart ssh.service
+else
+    echo "⚠️ No SSH service found to restart."
+fi
+    
 else
     echo "Skipping SSH configuration — not applicable in WSL or sshd not found."
 fi
