@@ -3,7 +3,7 @@
 # cis-cat configure additional settings.
 
 #2.2.4 Ensure telnet client is not installed
-sudo apt purge -y telnet
+sudo env DEBIAN_FRONTEND=noninteractive apt-get purge -y telnet < /dev/null
 
 # 3.5.1.3 Ensure ufw service is enabled
 sudo ufw allow proto tcp from any to any port 22
@@ -27,9 +27,9 @@ sudo chown root:root /etc/ssh/sshd_config
 sudo chmod og-rwx /etc/ssh/sshd_config
 
 #5.4.1 Ensure password creation requirements are configured
-sudo apt install -y libpam-pwquality
+sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-pwquality < /dev/null
 
 #5.5.4 Ensure default user umask is 027 or more restrictive
-sudo grep -RPi '(^|^[^#]*)\s*umask\s+([0-7][0-7][01][0-7]\b|[0-7][0-7][0-7][0-6]\b|[0-7][01][0-7]\b|[0-7][0-7][0-6]\b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+\b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?\b)' /etc/login.defs /etc/profile* /etc/bash.bashrc*
+sudo grep -RPi '(^|^[^#]*)\s*umask\s+([0-7][0-7][01][0-7]\b|[0-7][0-7][0-7][0-6]\b|[0-7][01][0-7]\b|[0-7][0-7][0-6]\b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+\b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?\b)' /etc/login.defs /etc/profile* /etc/bash.bashrc* || true   # check only: grep exits 1 when nothing non-compliant is found
 
 

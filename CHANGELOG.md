@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.0 - Ubuntu 26.04 Support (October 13, 2026)
+
+- ✅ Added Ubuntu 26.04.1 LTS (Kubuntu) support
+- ✅ Detects `sudo-rs` and skips the sudoers `logfile` rule (`testfix.sh`, rule 14/284)
+- ✅ Launcher no longer exits on the first non-zero script; failures are collected and summarized
+- ✅ Scripts run with `setsid`, stdin from `/dev/null`, noninteractive apt, and a per-script timeout
+- ✅ Admin and launching users added to `sshusers` before `AllowGroups`; `sshd -t` validation with rollback before restart
+- 🐛 `ciscat-configs.sh`: final umask `grep` no longer causes a false failure
+- 🐛 `testfix.sh`: apt calls are noninteractive and no longer read from the terminal
+- 🔒 Replaced `eval echo "~$SUDO_USER"` with `getent passwd`
+
 ## v1.1.1 – Patch Release (July 2, 2025)
 
 - ✅ Added `-y` to all apt install/remove/purge/upgrade commands to suppress interactive prompts

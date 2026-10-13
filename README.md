@@ -1,6 +1,6 @@
 # Linux Hardening Toolkit
 
-This toolkit helps system administrators apply CIS Benchmark-aligned hardening for Ubuntu Linux environments (18.04–24.04 LTS), with WSL compatibility and automation.
+This toolkit helps system administrators apply CIS Benchmark-aligned hardening for Ubuntu Linux environments (18.04 to 26.04 LTS, including Kubuntu), with WSL compatibility and automation.
 
 ---
 
@@ -25,6 +25,7 @@ linux-hardening-toolkit/
 * **20.04 LTS**
 * **22.04 LTS** ✅ tested
 * **24.04.3 LTS** ✅ tested
+* **26.04.1 LTS** 🧪 new in v1.2.0 (sudo-rs aware), validation in progress
 * **WSL2** ✅ supported (with automatic exclusions)
 
 > 🔒 Uses CIS Level 1 Workstation guidance by default.
@@ -33,9 +34,19 @@ linux-hardening-toolkit/
 
 ## 🔖 Version
 
-Current Version: `v1.1.1`
-Released: July 2, 2025
+Current Version: `v1.2.0`
+Released: October 13, 2026
 Maintainer: Alison Peterson
+
+---
+
+## 🚀 What's New in v1.2.0
+
+* ✅ Ubuntu 26.04 LTS support: detects `sudo-rs` and skips the `Defaults logfile=` rule it cannot parse
+* ✅ A script that returns a non-zero code no longer stops the whole run. Failures are logged and listed in a summary at the end
+* ✅ Each script runs detached from the terminal with stdin closed and a time limit (`SCRIPT_TIMEOUT`, default 1800 seconds), so a hidden prompt or a stopped `apt-get` can no longer freeze the launcher
+* ✅ The admin account and launching user are added to `sshusers` before `AllowGroups` is applied, and `sshd_config` is validated (with automatic rollback) before ssh restarts
+* ✅ `ciscat-configs.sh` no longer reports a false failure when the umask check finds nothing
 
 ---
 

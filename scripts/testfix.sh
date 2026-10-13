@@ -61,7 +61,9 @@ fi
 ###############################################################################
 (>&2 echo "Remediating rule 14/284: 'xccdf_org.ssgproject.content_rule_sudo_custom_logfile'")
 # Remediation is applicable only in certain platforms
-if dpkg-query --show --showformat='${db:Status-Status}\n' 'sudo' 2>/dev/null | grep -q installed; then
+# sudo-rs (default on Ubuntu 25.10 and newer) does not support 'Defaults logfile=', so skip it there
+if dpkg-query --show --showformat='${db:Status-Status}\n' 'sudo' 2>/dev/null | grep -q installed \
+   && ! sudo --version 2>/dev/null | head -n 1 | grep -qi 'sudo-rs'; then
 
 var_sudo_logfile='/var/log/sudo.log'
 
@@ -250,7 +252,7 @@ fi
 #	   remediation AFTER testing on a non-production
 #	   system!
 
-DEBIAN_FRONTEND=noninteractive apt-get remove -y "telnet"
+DEBIAN_FRONTEND=noninteractive apt-get remove -y "telnet" < /dev/null
 # END fix for 'xccdf_org.ssgproject.content_rule_package_telnet_removed'
 
 
@@ -523,7 +525,7 @@ sudo chmod og-rwx /etc/cron.d/
 # 6.2.1.2.1 Fix for installing `systemd-journal-remote`
 ###############################################################################
 (>&2 echo "Installing systemd-journal-remote...")
-sudo apt install -y systemd-journal-remote || {
+sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y systemd-journal-remote < /dev/null || {
     echo "Failed to install systemd-journal-remote. Skipping related steps."
 }
 
