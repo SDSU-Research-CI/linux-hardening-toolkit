@@ -69,7 +69,7 @@ Ubuntu 26.04 changed two defaults that older versions of this toolkit did not ex
 | Change in 26.04 | What the toolkit does |
 |---|---|
 | `sudo-rs` replaces classic `sudo` and does not support `Defaults logfile=` | Detected at start. The sudoers `logfile` rule (`testfix.sh`, rule 14/284) is skipped and `Defaults use_pty` is still applied |
-| `chrony` replaces `systemd-timesyncd` | `timesync.sh` adds the SDSU NTP servers (130.191.200.1 and 130.191.1.1) to chrony. The default Ubuntu sources stay as a backup |
+| `chrony` replaces `systemd-timesyncd` | `timesync.sh` adds the SDSU NTP servers to chrony. The default Ubuntu sources stay as a backup |
 
 Good to know:
 
