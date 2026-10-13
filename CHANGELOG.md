@@ -7,6 +7,7 @@
 - ✅ Launcher no longer exits on the first non-zero script; failures are collected and summarized
 - ✅ Scripts run with `setsid`, stdin from `/dev/null`, noninteractive apt, and a per-script timeout
 - ✅ Admin and launching users added to `sshusers` before `AllowGroups`; `sshd -t` validation with rollback before restart
+- ✅ `timesync.sh`: supports chrony (default on 26.04) as well as systemd-timesyncd, and restarts the correct service
 - 🐛 `ciscat-configs.sh`: final umask `grep` no longer causes a false failure
 - 🐛 `testfix.sh`: apt calls are noninteractive and no longer read from the terminal
 - 🔒 Replaced `eval echo "~$SUDO_USER"` with `getent passwd`

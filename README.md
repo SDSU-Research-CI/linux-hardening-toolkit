@@ -46,6 +46,7 @@ Maintainer: Alison Peterson
 * ✅ A script that returns a non-zero code no longer stops the whole run. Failures are logged and listed in a summary at the end
 * ✅ Each script runs detached from the terminal with stdin closed and a time limit (`SCRIPT_TIMEOUT`, default 1800 seconds), so a hidden prompt or a stopped `apt-get` can no longer freeze the launcher
 * ✅ The admin account and launching user are added to `sshusers` before `AllowGroups` is applied, and `sshd_config` is validated (with automatic rollback) before ssh restarts
+* ✅ `timesync.sh` supports chrony (Ubuntu 26.04) as well as systemd-timesyncd
 * ✅ `ciscat-configs.sh` no longer reports a false failure when the umask check finds nothing
 
 ---
