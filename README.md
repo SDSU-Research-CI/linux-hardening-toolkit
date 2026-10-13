@@ -9,7 +9,6 @@ This toolkit helps system administrators apply CIS Benchmark-aligned hardening f
 ```
 linux-hardening-toolkit/
 ├── README.md
-├── VERSION
 ├── CHANGELOG.md
 ├── harden_launcher.sh
 ├── scripts/
@@ -25,8 +24,10 @@ linux-hardening-toolkit/
 * **20.04 LTS**
 * **22.04 LTS** ✅ tested
 * **24.04.3 LTS** ✅ tested
-* **26.04.1 LTS** 🧪 new in v1.2.0 (sudo-rs aware), validation in progress
+* **26.04.1 LTS** ✅ tested (Kubuntu, v1.2.0)
 * **WSL2** ✅ supported (with automatic exclusions)
+
+> v1.2.0 was also run through a clean Ubuntu 22.04 and 24.04 environment to confirm nothing changed for those releases (classic `sudo` rules, SSH setup and group setup behave as before).
 
 > 🔒 Uses CIS Level 1 Workstation guidance by default.
 
@@ -44,7 +45,7 @@ Maintainer: Alison Peterson
 
 * ✅ Ubuntu 26.04 LTS support: detects `sudo-rs` and skips the `Defaults logfile=` rule it cannot parse
 * ✅ A script that returns a non-zero code no longer stops the whole run. Failures are logged and listed in a summary at the end
-* ✅ Each script runs detached from the terminal with stdin closed and a time limit (`SCRIPT_TIMEOUT`, default 1800 seconds), so a hidden prompt or a stopped `apt-get` can no longer freeze the launcher
+* ✅ Each script runs detached from the terminal with stdin closed and a time limit (`SCRIPT_TIMEOUT`, default 3600 seconds), so a hidden prompt or a stopped `apt-get` can no longer freeze the launcher
 * ✅ The admin account and launching user are added to `sshusers` before `AllowGroups` is applied, and `sshd_config` is validated (with automatic rollback) before ssh restarts
 * ✅ `timesync.sh` supports chrony (Ubuntu 26.04) as well as systemd-timesyncd
 * ✅ `ciscat-configs.sh` no longer reports a false failure when the umask check finds nothing
@@ -61,6 +62,23 @@ Maintainer: Alison Peterson
 
 ---
 
+## 🆕 Ubuntu 26.04 Notes
+
+Ubuntu 26.04 changed two defaults that older versions of this toolkit did not expect. v1.2.0 handles both automatically:
+
+| Change in 26.04 | What the toolkit does |
+|---|---|
+| `sudo-rs` replaces classic `sudo` and does not support `Defaults logfile=` | Detected at start. The sudoers `logfile` rule (`testfix.sh`, rule 14/284) is skipped and `Defaults use_pty` is still applied |
+| `chrony` replaces `systemd-timesyncd` | `timesync.sh` adds the SDSU NTP servers (130.191.200.1 and 130.191.1.1) to chrony. The default Ubuntu sources stay as a backup |
+
+Good to know:
+
+* The SDSU NTP servers answer only on the campus network or VPN. Off campus they show `Reach 0` in `chronyc sources` and chrony keeps using the Ubuntu sources
+* `forwarding.sh` and `ipforward.sh` disable IP forwarding, which can break Waydroid or container networking
+* The run ends with a **SUMMARY** block. Scripts that returned a non-zero code are listed there, so review `/var/log/hardening.log` for those
+
+---
+
 ## ⚙️ How to Use
 
 1. **Clone the Repository**
@@ -74,7 +92,7 @@ sudo chmod +x harden_launcher.sh
 sudo ./harden_launcher.sh
 ```
 
-> 📝 Note: No need to manually upload or unzip files — run everything directly from the cloned folder.
+> 📝 Note: No need to manually upload or unzip files, run everything directly from the cloned folder.
 
 2. **Follow the prompts:**
 

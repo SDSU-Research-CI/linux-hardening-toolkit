@@ -13,14 +13,14 @@
 # - Every script runs detached from the terminal (setsid) with stdin closed and
 #   apt prompts disabled, so a hidden prompt or a job-control stop can never
 #   freeze the run.
-# - Every script has a time limit (SCRIPT_TIMEOUT, default 1800 seconds).
+# - Every script has a time limit (SCRIPT_TIMEOUT, default 3600 seconds).
 
 # -------- Must run as root --------
 if [[ $EUID -ne 0 ]]; then
     exec sudo bash "$(realpath "$0")" "$@"
 fi
 
-SCRIPT_TIMEOUT="${SCRIPT_TIMEOUT:-1800}"
+SCRIPT_TIMEOUT="${SCRIPT_TIMEOUT:-3600}"
 
 # -------- Logging --------
 LOGFILE="/var/log/hardening.log"
@@ -76,6 +76,8 @@ run_script() {
     else
         if [[ $rc -eq 124 || $rc -eq 137 ]]; then
             echo "⚠️ Timeout after ${SCRIPT_TIMEOUT}s: $script (continuing)" | tee -a "$LOGFILE"
+            # A killed apt/dpkg run can leave packages half configured, so repair them
+            DEBIAN_FRONTEND=noninteractive dpkg --configure -a < /dev/null >> "$LOGFILE" 2>&1 || true
         else
             echo "⚠️ Exit code $rc: $script (continuing, check $LOGFILE)" | tee -a "$LOGFILE"
         fi
