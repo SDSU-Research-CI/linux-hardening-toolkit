@@ -124,6 +124,6 @@ Please coordinate through the Linux Working Group if you'd like to extend this f
 
 ---
 
-© San Diego State University · College of Science · 2025
+© San Diego State University · College of Sciences · 2026
 
 Maintained by: Alison Peterson
