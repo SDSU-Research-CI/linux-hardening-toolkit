@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.1 - Patch Release (November 23, 2026)
+
+- 🐛 `harden_launcher.sh`: AD login names longer than 20 characters are cut to 20 characters when added to `sshusers`, because AD stores the login name cut off (a long `-desktop-admin` account never matched `AllowGroups` before)
+
 ## v1.2.0 - Ubuntu 26.04 Support (October 13, 2026)
 
 - ✅ Added Ubuntu 26.04.1 LTS (Kubuntu) support
