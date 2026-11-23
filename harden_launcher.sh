@@ -192,6 +192,15 @@ groupadd -f sshusers
 add_ssh_user() {
     local user="$1"
     [[ -z "$user" ]] && return 0
+    # AD cuts login names at 20 characters, so a long AD name such as
+    # jsmithson-desktop-admin is stored as jsmithson-desktop-ad. If the name is
+    # longer than 20 characters and is not a local or already known account,
+    # use the cut-off form so the AllowGroups match works.
+    if [[ ${#user} -gt 20 ]] && ! grep -q "^${user}:" /etc/passwd \
+        && ! getent passwd "$user" >/dev/null 2>&1; then
+        echo "'$user' is longer than 20 characters. AD stores login names cut off, using '${user:0:20}'."
+        user="${user:0:20}"
+    fi
     if getent group sshusers | grep -qE "[:,]${user}(,|\$)"; then
         echo "'$user' is already in sshusers."
         return 0
